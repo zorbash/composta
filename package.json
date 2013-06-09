@@ -1,0 +1,20 @@
+{
+  "name": "composta",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "coffee composta.coffee"
+  },
+  "dependencies": {
+    "express": "*",
+    "hjs": "*",
+    "mocha": "*",
+    "chai": "*",
+    "underscore": "*",
+    "optimist": "*",
+    "q": "*",
+    "request": "*",
+    "moment": "*",
+    "timeago": "*",
+    "github": "*"
+  }
+}
