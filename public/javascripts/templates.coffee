@@ -15,15 +15,13 @@ window.Templates = {
     </ul>
     """
     candidate_list_item: """
-    <li class="candidate">
-      <span class="repo-name">{{name}}</span>
-      <button class="ladda-button js-show-more more" data-name="{{name}}">
-        <i class="icon-caret-right"></i>
-      </button>
+    <li class="candidate js-candidate" data-name="{{name}}">
+      <i class="remove-sign icon-remove-sign js-remove-candidate"></i>
+      <span class="name js-show-more more">{{name}}</span>
     </li>
     """
     candidate_info: """
-    <div class="more">
+    <div class="more" data-name={{name}}>
       <h4>Info about <span class="repo-name">{{name}}</span><span class="js-remove remove"><i class="icon-remove"></i></span></h4>
       <ul>
         <li>
@@ -59,6 +57,12 @@ window.Templates = {
           <span>{{language}}</span>
       </li>
       </ul>
+    </div>
+    """
+    chart: """
+    <div class="js-{{prop}} chart-wrapper">
+      <h3>{{prop}}</h3>
+      <div class="js-chart chart"></div>
     </div>
     """
   compiled: {}

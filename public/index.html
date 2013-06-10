@@ -7,30 +7,41 @@
     <link rel='stylesheet' href='/stylesheets/vendor/reset.css'/>
     <link rel='stylesheet' href='/stylesheets/vendor/ladda.css'/>
     <link rel='stylesheet' href='/stylesheets/vendor/font-awesome.css'/>
+    <link rel='stylesheet' href='/stylesheets/vendor/jquery.tipsy.css'/>
+
     <link rel='stylesheet' href='/stylesheets/style.css'/>
 
 
     <script type="text/javascript" src="/javascripts/vendor/jquery-2.0.2.min.js"></script>
     <script type="text/javascript" src="/javascripts/vendor/hogan-2.0.0.min.js"></script>
+    <script type="text/javascript" src="/javascripts/vendor/d3.v3.min.js"></script>
+    <script type="text/javascript" src="/javascripts/vendor/lodash.min.js"></script>
     <script type="text/javascript" src="/javascripts/vendor/ladda.js"></script>
+    <script type="text/javascript" src="/javascripts/vendor/jquery.tipsy.js"></script>
+
 
 
     <script type="text/javascript" src="/javascripts/templates.js"></script>
     <script type="text/javascript" src="/javascripts/index.js"></script>
+
+    <script type="text/javascript" src="/javascripts/data.js"></script>
   </head>
   <body class="composta">
+    <a href="https://github.com/zorbash/composta">
+      <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub">
+    </a>
     <div class="about">
       <h1>Composta</h1>
       <p>Let the numbers speak for themselves and the graphs sing.</p>
     </div>
     <div class="search">
-      <input class="js-input" type="text" placeholder="search github" autofocus>
+      <input class="js-input" type="search" placeholder="search github" autofocus>
       <button class="js-submit submit ladda-button green slide-right">search</button>
       <div class="results js-search-results"></div>
     </div>
     <div class="candidates-wrapper cf">
       <h2>Candidates</h2>
-      <p class="js-search-tip search-tip">Please add projects using the search above</p>
+      <p class="js-search-tip search-tip">Please add at least 2 projects using the search above</p>
       <ul class="candidates js-candidates">
       </ul>
       <div class="candidate-info js-candidate-info">

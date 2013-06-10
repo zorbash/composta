@@ -10,6 +10,7 @@
       this.initializeSearchButton();
       this.bindHandlers();
       this.candidates = {};
+      this.charts = {};
     }
 
     Composta.prototype.search = function(q) {
@@ -23,7 +24,8 @@
       this.$search_results = this.$el.find('.js-search-results');
       this.$candidates = this.$el.find('.js-candidates');
       this.$candidate_info = this.$el.find('.js-candidate-info');
-      return this.$seach_tip = this.$el.find('.js-search-tip');
+      this.$seach_tip = this.$el.find('.js-search-tip');
+      return this.$charts = this.$el.find('.js-charts');
     };
 
     Composta.prototype.compileTemplates = function() {
@@ -50,7 +52,11 @@
     };
 
     Composta.prototype.addCandidate = function(candidate) {
-      return this.$candidates.append(Templates.compiled.candidate_list_item.render(candidate));
+      this.$candidates.append(Templates.compiled.candidate_list_item.render(candidate));
+      this.$candidates.find('.js-candidate:last .name').css('color', candidate.color);
+      if (_.size(this.candidates) > 1) {
+        return this.renderCharts();
+      }
     };
 
     Composta.prototype.initializeSearchButton = function() {
@@ -74,7 +80,79 @@
     };
 
     Composta.prototype.renderCandidateInfo = function(candidate) {
-      return this.$candidate_info.html(Templates.compiled.candidate_info.render(candidate));
+      return this.$candidate_info.html(Templates.compiled.candidate_info.render(candidate)).data('name', candidate.name);
+    };
+
+    Composta.prototype.preprocessCandidates = function() {
+      var k, v, _ref, _results;
+
+      this.d3_candidates = [];
+      _ref = this.candidates;
+      _results = [];
+      for (k in _ref) {
+        v = _ref[k];
+        _results.push(this.d3_candidates.push(v));
+      }
+      return _results;
+    };
+
+    Composta.prototype.renderCharts = function(props) {
+      var k, v, _results;
+
+      if (props == null) {
+        props = ['forks', 'followers'];
+      }
+      this.$charts.html('');
+      if (_.size(this.candidates) === 0) {
+        return;
+      }
+      this.preprocessCandidates();
+      _results = [];
+      for (k in props) {
+        v = props[k];
+        _results.push(this.renderChart(v));
+      }
+      return _results;
+    };
+
+    Composta.prototype.renderChart = function(prop) {
+      var x_axis;
+
+      x_axis = d3.scale.linear().domain([
+        0, d3.max(this.d3_candidates, function(el) {
+          return el[prop];
+        })
+      ]).range([0, 700]);
+      this.$charts.append(Templates.compiled.chart.render({
+        prop: prop
+      }));
+      this.charts[prop] = d3.select(".js-" + prop).append('svg').attr('class', "chart " + prop).attr('width', 700).attr('height', _.size(this.d3_candidates) * 20);
+      this.charts[prop].selectAll('rect').data(this.d3_candidates).enter().append('rect').style('fill', function(d) {
+        return d.color;
+      }).attr('title', function(d) {
+        return d.name;
+      }).attr('y', function(d, i) {
+        return i * 20;
+      }).attr('width', function(d, i) {
+        return x_axis(d[prop]);
+      }).attr('height', 20);
+      this.charts[prop].selectAll("text").data(this.d3_candidates).enter().append("text").attr('x', function(d, i) {
+        return x_axis(d[prop]);
+      }).attr('y', function(d, i) {
+        return i * 20;
+      }).attr('dx', -5).attr('dy', 17).attr('text-anchor', 'end').attr('style', 'color: #CCC').text(function(d, i) {
+        return d[prop];
+      });
+      return this.$el.find(".js-" + prop + " rect").tipsy({
+        gravity: 'w',
+        html: true,
+        title: function() {
+          var d;
+
+          d = this.__data__;
+          return "" + d.name;
+        }
+      });
     };
 
     Composta.prototype.bindHandlers = function() {
@@ -91,6 +169,9 @@
       });
       this.$el.on('click', '.js-show-more', function(e) {
         return _this.onCandidateShowMoreClick(e);
+      });
+      this.$el.on('click', '.js-remove-candidate', function(e) {
+        return _this.onCandidateRemoveClick(e);
       });
       this.$el.on('click', '.js-remove', function() {
         return _this.onCandidateInfoRemoveClick();
@@ -117,16 +198,18 @@
       this.$seach_tip.hide();
       if (this.candidates[(_ref = this.cached_response[index]) != null ? _ref.name : void 0] == null) {
         new_candidate = this.cached_response[index];
+        new_candidate.color = "hsl(" + (_.random(0, 360)) + ", 50%, 50%)";
         this.candidates[this.cached_response[index].name] = new_candidate;
         return this.addCandidate(new_candidate);
       }
     };
 
     Composta.prototype.onCandidateShowMoreClick = function(e) {
-      var $target, name;
+      var $parent, $target, name;
 
       $target = $(e.currentTarget);
-      name = $target.data('name');
+      $parent = $target.parent('.js-candidate');
+      name = $parent.data('name');
       return this.renderCandidateInfo(this.candidates[name]);
     };
 
@@ -134,12 +217,28 @@
       return this.$candidate_info.html('');
     };
 
+    Composta.prototype.onCandidateRemoveClick = function(e) {
+      var $parent, $target, name;
+
+      $target = $(e.currentTarget);
+      $parent = $target.parent('.js-candidate');
+      name = $parent.data('name');
+      if (this.$candidate_info.data('name') === name) {
+        this.$candidate_info.hide();
+      }
+      delete this.candidates[name];
+      $parent.hide('slow').promise().then(function() {
+        return this.remove();
+      });
+      return this.renderCharts();
+    };
+
     return Composta;
 
   })();
 
   $(function() {
-    return new Composta();
+    return window.c = new Composta();
   });
 
 }).call(this);

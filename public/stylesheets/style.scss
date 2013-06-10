@@ -41,14 +41,17 @@
 .search {
   text-align: center;
 
-  input[type=text] {
+  input[type=search] {
     width: 300px;
     font-size: 20px;
     line-height: 36px;
-    padding-left: 10px;
+    padding-left: 30px;
     border-radius: 10px 0 0 10px;
     border: none;
     box-shadow: 2px 2px 3px rgba(0,0,0,0.3);
+    background: #CCC url(../images/search.svg) no-repeat .3em 50% / 1em auto;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+    color: #444;
 
     &:focus {
       outline: none;
@@ -126,6 +129,7 @@
 
   h2 {
     margin-bottom: 0;
+    // border-bottom: 1px dashed #CCC;
   }
 
   .search-tip {
@@ -136,6 +140,10 @@
 .candidates, .candidate-info {
   width: 480px;
   border-radius: 10px;
+
+  .name {
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+  }
 }
 
 .candidates {
@@ -155,8 +163,21 @@
 
   h4 {
     margin: 0;
-    margin-bottom: 5px;
-    border-bottom: 1px dashed #ccc;
+    margin-bottom: 0;
+    // border-bottom: 1px dashed #ccc;
+    background-color: rgba(0,0,0,0.5);
+    padding-left: 5px;
+
+    border-radius: 4px;
+  }
+
+  ul {
+    padding-left: 7px;
+    padding-top: 1px;
+    margin-top: -1px;
+    background-color: rgba(255,255,255,0.1);
+    padding-bottom: 2px;
+    border-radius: 0 0 4px 4px;
   }
 
   li {
@@ -174,20 +195,27 @@
     }
   }
 
-  .remove {
-    float: right;
-    cursor: pointer;
-
-    &:hover {
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.9);
-    }
+  .more {
 
   }
 }
 
+.remove, .remove-sign {
+  cursor: pointer;
+  transition: 0.3s text-shadow ease-out;
+
+  &:hover {
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.9);
+  }
+}
+
+.remove {
+  float: right;
+}
+
 .candidate {
   .more {
-    color: #DDD;
+    cursor: pointer;
   }
 }
 
@@ -199,7 +227,21 @@
   background-color: rgba(255,255,255, 0.2);
   border-radius: 10px;
   box-shadow: inset 1px 1px 3px rgba(200,200,200,0.5);
+
+  h3 {
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.7);
+    &:first-letter {
+      text-transform: capitalize;
+    }
+  }
 }
+
+.chart-wrapper {
+  padding-left: 20px;
+  padding-top: 1px;
+}
+
+
 
 
 footer {
@@ -207,6 +249,9 @@ footer {
   margin: 0 auto;
   p {
     text-align: right;
+  }
+  .icon-heart {
+    color: #FF3D7F;
   }
 }
 
@@ -221,6 +266,30 @@ ul {
   padding-left: 0;
   margin: 0;
 }
+
+
+// styles for the graphs
+.chart {
+  rect {
+    // fill: #3FB8AF;
+    -webkit-svg-shadow: 3px 3px 1px rgba(100, 100, 100, 0.7);
+    stroke: rgba(0,0,0,0.2);
+  }
+  text {
+    fill: #BBB;
+    -webkit-svg-shadow: 1px 1px 1px rgba(100, 100, 100, 0.7);
+    font-family: monospace;
+    font-size: 14px;
+  }
+}
+
+
+
+
+
+
+
+
 
 .cf:before,
 .cf:after {
