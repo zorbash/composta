@@ -61,7 +61,7 @@ window.Templates = {
     """
     chart: """
     <div class="js-{{prop}} chart-wrapper">
-      <h3>{{prop}}</h3>
+      <h3>{{normalized_prop}}</h3>
       <div class="js-chart chart"></div>
     </div>
     """

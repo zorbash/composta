@@ -100,7 +100,7 @@
       var k, v, _results;
 
       if (props == null) {
-        props = ['forks', 'followers'];
+        props = ['forks', 'followers', 'open_issues', 'age_seconds'];
       }
       this.$charts.html('');
       if (_.size(this.candidates) === 0) {
@@ -124,7 +124,8 @@
         })
       ]).range([0, 700]);
       this.$charts.append(Templates.compiled.chart.render({
-        prop: prop
+        prop: prop,
+        normalized_prop: prop.replace('_', ' ')
       }));
       this.charts[prop] = d3.select(".js-" + prop).append('svg').attr('class', "chart " + prop).attr('width', 700).attr('height', _.size(this.d3_candidates) * 20);
       this.charts[prop].selectAll('rect').data(this.d3_candidates).enter().append('rect').style('fill', function(d) {

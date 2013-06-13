@@ -61,7 +61,7 @@ class Composta
     @d3_candidates = []
     @d3_candidates.push v for k,v of @candidates
 
-  renderCharts: (props = ['forks', 'followers']) ->
+  renderCharts: (props = ['forks', 'followers', 'open_issues', 'age_seconds']) ->
     @$charts.html ''
 
     return if _.size(@candidates) is 0
@@ -74,7 +74,10 @@ class Composta
       .domain([0, d3.max(@d3_candidates, (el) -> el[prop])])
       .range([0, 700])
 
-    @$charts.append Templates.compiled.chart.render { prop: prop }
+    @$charts.append Templates.compiled.chart.render {
+      prop: prop
+      normalized_prop: prop.replace '_', ' '
+    }
 
     @charts[prop] = d3.select(".js-#{prop}")
       .append('svg')

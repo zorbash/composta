@@ -129,7 +129,7 @@
 
   h2 {
     margin-bottom: 0;
-    // border-bottom: 1px dashed #CCC;
+    text-shadow: 0px 1px 1px rgba(0,0,0,0.8);
   }
 
   .search-tip {
@@ -169,9 +169,11 @@
     padding-left: 5px;
 
     border-radius: 4px;
+    box-shadow: 0px 1px 1px rgba(0,0,0,0.5);
   }
 
   ul {
+    padding: 1px 10px 4px 10px;
     padding-left: 7px;
     padding-top: 1px;
     margin-top: -1px;
@@ -183,7 +185,7 @@
   li {
     label {
       float: left;
-      width: 130px;
+      width: 100px;
       text-align: left;
       color: #DAD8A7;
       text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
@@ -252,6 +254,7 @@ footer {
   }
   .icon-heart {
     color: #FF3D7F;
+    -webkit-animation: beating 1s ease-in-out infinite;
   }
 }
 
@@ -274,15 +277,40 @@ ul {
     // fill: #3FB8AF;
     -webkit-svg-shadow: 3px 3px 1px rgba(100, 100, 100, 0.7);
     stroke: rgba(0,0,0,0.2);
+    -webkit-transition: .2s all ease-out;
+    -moz-transition: .2s all ease-out;
+    -ms-transition: .2s all ease-out;
+    -o-transition: .2s all ease-out;
+    transition: .2s all ease-out;
+
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.5;
+      stroke: rgba(0,0,0,0.4);
+    }
   }
   text {
     fill: #BBB;
-    -webkit-svg-shadow: 1px 1px 1px rgba(100, 100, 100, 0.7);
+    -webkit-svg-shadow: 1px 1px 0px rgba(20, 20, 20, 0.9);
     font-family: monospace;
     font-size: 14px;
+    font-weight: bold;
   }
 }
 
+
+
+// animations
+@-webkit-keyframes beating {
+  0% {
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+  }
+
+  100% {
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.9);
+  }
+}
 
 
 

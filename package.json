@@ -2,7 +2,7 @@
   "name": "composta",
   "version": "0.0.1",
   "scripts": {
-    "start": "coffee composta.coffee"
+    "start": "coffee composta_server.coffee"
   },
   "dependencies": {
     "express": "*",
