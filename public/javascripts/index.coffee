@@ -28,14 +28,22 @@ class Composta
       Templates.compiled[k] = Hogan.compile v
 
   startSearch: ->
+    val = @$input.val().trim()
     @search_button.start()
-    @search(@$input.val())
-      .then (response) =>
-        @search_button.stop()
-        @renderSearchResults response
-        @cached_response = response
+    if val.match /[ ,]+/
+      @search(@$input.val())
+        .then (response) =>
+          @search_button.stop()
+          @addCandidate(candidate) for key, candidate of response
+    else 
+      @search(@$input.val())
+        .then (response) =>
+          @search_button.stop()
+          @renderSearchResults response
+          @cached_response = response
 
   addCandidate: (candidate) ->
+    @candidates[candidate.name] = candidate
     @$candidates.append Templates.compiled.candidate_list_item.render candidate
     @$candidates.find('.js-candidate:last .name').css 'color', candidate.color
     @renderCharts() if _.size(@candidates) > 1
@@ -140,7 +148,6 @@ class Composta
 
     if !@candidates[@cached_response[index]?.name]?
       new_candidate = @cached_response[index]
-      new_candidate.color = "hsl(#{_.random(0,360)}, 50%, 50%)"
       @candidates[@cached_response[index].name] = new_candidate
       @addCandidate new_candidate
 

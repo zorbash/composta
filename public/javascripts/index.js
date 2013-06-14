@@ -30,7 +30,6 @@
 
     Composta.prototype.compileTemplates = function() {
       var k, v, _ref, _results;
-
       _ref = Templates.source;
       _results = [];
       for (k in _ref) {
@@ -41,17 +40,32 @@
     };
 
     Composta.prototype.startSearch = function() {
-      var _this = this;
-
+      var val,
+        _this = this;
+      val = this.$input.val().trim();
       this.search_button.start();
-      return this.search(this.$input.val()).then(function(response) {
-        _this.search_button.stop();
-        _this.renderSearchResults(response);
-        return _this.cached_response = response;
-      });
+      if (val.match(/[ ,]+/)) {
+        return this.search(this.$input.val()).then(function(response) {
+          var candidate, key, _results;
+          _this.search_button.stop();
+          _results = [];
+          for (key in response) {
+            candidate = response[key];
+            _results.push(_this.addCandidate(candidate));
+          }
+          return _results;
+        });
+      } else {
+        return this.search(this.$input.val()).then(function(response) {
+          _this.search_button.stop();
+          _this.renderSearchResults(response);
+          return _this.cached_response = response;
+        });
+      }
     };
 
     Composta.prototype.addCandidate = function(candidate) {
+      this.candidates[candidate.name] = candidate;
       this.$candidates.append(Templates.compiled.candidate_list_item.render(candidate));
       this.$candidates.find('.js-candidate:last .name').css('color', candidate.color);
       if (_.size(this.candidates) > 1) {
@@ -65,7 +79,6 @@
 
     Composta.prototype.setSearchResultsPosition = function() {
       var input_position;
-
       input_position = this.$input.position();
       return this.$search_results.css({
         left: input_position.left,
@@ -85,7 +98,6 @@
 
     Composta.prototype.preprocessCandidates = function() {
       var k, v, _ref, _results;
-
       this.d3_candidates = [];
       _ref = this.candidates;
       _results = [];
@@ -98,7 +110,6 @@
 
     Composta.prototype.renderCharts = function(props) {
       var k, v, _results;
-
       if (props == null) {
         props = ['forks', 'followers', 'open_issues', 'age_seconds'];
       }
@@ -117,7 +128,6 @@
 
     Composta.prototype.renderChart = function(prop) {
       var x_axis;
-
       x_axis = d3.scale.linear().domain([
         0, d3.max(this.d3_candidates, function(el) {
           return el[prop];
@@ -149,7 +159,6 @@
         html: true,
         title: function() {
           var d;
-
           d = this.__data__;
           return "" + d.name;
         }
@@ -158,7 +167,6 @@
 
     Composta.prototype.bindHandlers = function() {
       var _this = this;
-
       this.$input.on('keyup', function(e) {
         return _this.onQueryKeypress(e);
       });
@@ -193,13 +201,11 @@
 
     Composta.prototype.onResultClick = function(e) {
       var index, new_candidate, _ref;
-
       index = $(e.currentTarget).index();
       this.$search_results.html('');
       this.$seach_tip.hide();
       if (this.candidates[(_ref = this.cached_response[index]) != null ? _ref.name : void 0] == null) {
         new_candidate = this.cached_response[index];
-        new_candidate.color = "hsl(" + (_.random(0, 360)) + ", 50%, 50%)";
         this.candidates[this.cached_response[index].name] = new_candidate;
         return this.addCandidate(new_candidate);
       }
@@ -207,7 +213,6 @@
 
     Composta.prototype.onCandidateShowMoreClick = function(e) {
       var $parent, $target, name;
-
       $target = $(e.currentTarget);
       $parent = $target.parent('.js-candidate');
       name = $parent.data('name');
@@ -220,7 +225,6 @@
 
     Composta.prototype.onCandidateRemoveClick = function(e) {
       var $parent, $target, name;
-
       $target = $(e.currentTarget);
       $parent = $target.parent('.js-candidate');
       name = $parent.data('name');
